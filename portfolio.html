@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Portfolio — Business Software Specialist</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #1e1e2e;
+    --accent: #f97316;
+    --accent2: #fb923c;
+    --gold: #fbbf24;
+    --text: #e8e8f0;
+    --muted: #6b6b85;
+    --green: #22c55e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom Cursor */
+  .cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s, width 0.2s, height 0.2s, opacity 0.2s;
+    opacity: 0.5;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.3rem;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .nav-logo span { color: var(--text); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.88rem; font-weight: 500;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent); color: #000;
+    padding: 0.55rem 1.4rem; border-radius: 4px;
+    font-size: 0.85rem; font-weight: 700;
+    text-decoration: none; letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-grid-bg {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(249,115,22,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(249,115,22,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-glow {
+    position: absolute; top: -100px; right: -100px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(249,115,22,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute; bottom: -200px; left: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(251,191,36,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-content { max-width: 800px; position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(249,115,22,0.1);
+    border: 1px solid rgba(249,115,22,0.3);
+    color: var(--accent); padding: 0.4rem 1rem;
+    border-radius: 50px; font-size: 0.8rem; font-weight: 500;
+    margin-bottom: 2rem; letter-spacing: 0.04em;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge-dot {
+    width: 6px; height: 6px; background: var(--green);
+    border-radius: 50%; animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: clamp(3rem, 6vw, 5.5rem);
+    line-height: 1.0; letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero h1 em {
+    font-style: normal;
+    -webkit-text-stroke: 1px var(--accent);
+    color: transparent;
+  }
+  .hero-sub {
+    font-size: 1.15rem; color: var(--muted);
+    line-height: 1.7; max-width: 560px;
+    margin-bottom: 2.5rem; font-weight: 300;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-sub strong { color: var(--text); font-weight: 500; }
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--accent); color: #000;
+    padding: 0.9rem 2rem; border-radius: 5px;
+    font-weight: 700; font-size: 0.95rem;
+    text-decoration: none; letter-spacing: 0.01em;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(249,115,22,0.35); }
+  .btn-secondary {
+    color: var(--text); padding: 0.9rem 2rem; border-radius: 5px;
+    font-weight: 500; font-size: 0.95rem;
+    text-decoration: none; border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem;
+    padding-top: 3rem; border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 800; color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .stat-label { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTION BASE */
+  section { padding: 6rem 4rem; position: relative; z-index: 1; }
+  .section-label {
+    font-size: 0.75rem; color: var(--accent); font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-label::before {
+    content: ''; display: block;
+    width: 24px; height: 2px; background: var(--accent);
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800; letter-spacing: -0.02em;
+    line-height: 1.1; margin-bottom: 1rem;
+  }
+  .section-desc { color: var(--muted); font-size: 1rem; max-width: 480px; line-height: 1.7; }
+
+  /* SERVICES */
+  .services { background: var(--surface); }
+  .services-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 3.5rem; flex-wrap: wrap; gap: 2rem;
+  }
+  .service-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden;
+  }
+  .service-cat {
+    background: var(--card); padding: 2rem;
+    transition: background 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .service-cat:hover { background: #1a1a26; }
+  .service-cat::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%; background: var(--accent);
+    transform: scaleY(0); transition: transform 0.2s;
+    transform-origin: bottom;
+  }
+  .service-cat:hover::before { transform: scaleY(1); }
+  .cat-icon {
+    font-size: 1.8rem; margin-bottom: 1rem;
+    display: block;
+  }
+  .cat-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    margin-bottom: 0.6rem; letter-spacing: -0.01em;
+  }
+  .cat-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+  .cat-price {
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--gold);
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+    padding: 0.3rem 0.8rem; border-radius: 4px;
+    display: inline-block;
+  }
+
+  /* PRICING TABLE */
+  .pricing-section { }
+  .pricing-header { margin-bottom: 3.5rem; }
+  .pricing-tabs {
+    display: flex; gap: 0.5rem; flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+  .pricing-tab {
+    padding: 0.5rem 1.2rem; border-radius: 50px;
+    font-size: 0.82rem; font-weight: 500;
+    cursor: pointer; border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    transition: all 0.2s;
+  }
+  .pricing-tab.active, .pricing-tab:hover {
+    background: var(--accent); color: #000;
+    border-color: var(--accent); font-weight: 700;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .price-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1.5rem;
+    transition: all 0.2s; position: relative;
+  }
+  .price-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(249,115,22,0.1);
+  }
+  .price-card.featured {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, rgba(249,115,22,0.08), var(--card));
+  }
+  .price-card.featured::after {
+    content: 'POPULAR';
+    position: absolute; top: -1px; right: 1rem;
+    background: var(--accent); color: #000;
+    font-size: 0.62rem; font-weight: 800;
+    padding: 0.2rem 0.6rem; border-radius: 0 0 4px 4px;
+    letter-spacing: 0.08em;
+  }
+  .price-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+  .price-range {
+    font-size: 1.25rem; font-weight: 700;
+    color: var(--accent); letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+    font-family: 'Syne', sans-serif;
+  }
+  .price-note { font-size: 0.78rem; color: var(--muted); }
+  .price-divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 1rem 0;
+  }
+  .price-feature {
+    font-size: 0.82rem; color: var(--muted);
+    display: flex; align-items: center; gap: 0.4rem;
+    margin-bottom: 0.4rem;
+  }
+  .price-feature::before { content: '✓'; color: var(--green); font-weight: 700; }
+
+  /* PROCESS */
+  .process-section { background: var(--surface); }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem; margin-top: 3.5rem; position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute; top: 2rem; left: 10%; right: 10%;
+    height: 1px; background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+    pointer-events: none;
+  }
+  .process-step { text-align: center; padding: 0 1rem; }
+  .step-num {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--card); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1rem; color: var(--accent);
+    margin: 0 auto 1.2rem;
+    position: relative; z-index: 1;
+    transition: all 0.2s;
+  }
+  .process-step:hover .step-num {
+    background: var(--accent); color: #000;
+    border-color: var(--accent);
+  }
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
+  .step-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  /* TESTIMONIALS */
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem; margin-top: 3.5rem;
+  }
+  .testimonial {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 2rem;
+    transition: border-color 0.2s;
+  }
+  .testimonial:hover { border-color: rgba(249,115,22,0.3); }
+  .testimonial-quote {
+    font-size: 0.95rem; color: var(--text);
+    line-height: 1.75; margin-bottom: 1.5rem;
+    font-style: italic; font-weight: 300;
+  }
+  .testimonial-quote::before { content: '"'; color: var(--accent); font-size: 1.5rem; font-style: normal; }
+  .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+  .author-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 1rem; color: #000;
+    font-family: 'Syne', sans-serif;
+  }
+  .author-name { font-weight: 600; font-size: 0.9rem; }
+  .author-biz { font-size: 0.78rem; color: var(--muted); }
+  .stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 0.3rem; }
+
+  /* CONTACT */
+  .contact-section { background: var(--surface); }
+  .contact-wrap {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: start;
+  }
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label { font-size: 0.8rem; color: var(--muted); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+  .form-input, .form-select, .form-textarea {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.8rem 1rem;
+    color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--accent);
+  }
+  .form-select { cursor: pointer; }
+  .form-select option { background: var(--card); }
+  .form-textarea { resize: vertical; min-height: 120px; }
+  .form-submit {
+    background: var(--accent); color: #000;
+    padding: 1rem 2rem; border-radius: 6px;
+    font-weight: 700; font-size: 1rem;
+    border: none; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s; letter-spacing: 0.01em;
+  }
+  .form-submit:hover { background: var(--accent2); transform: translateY(-2px); }
+  .contact-info h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem; font-weight: 800;
+    margin-bottom: 1rem;
+  }
+  .contact-info p { color: var(--muted); line-height: 1.7; margin-bottom: 2rem; font-size: 0.95rem; }
+  .contact-items { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-item {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1rem 1.2rem; background: var(--card);
+    border: 1px solid var(--border); border-radius: 8px;
+    transition: border-color 0.2s;
+  }
+  .contact-item:hover { border-color: var(--accent); }
+  .contact-icon {
+    width: 40px; height: 40px; border-radius: 8px;
+    background: rgba(249,115,22,0.1);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .contact-item-label { font-size: 0.75rem; color: var(--muted); }
+  .contact-item-val { font-size: 0.9rem; font-weight: 500; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.1rem; color: var(--accent);
+  }
+  .footer-copy { font-size: 0.8rem; color: var(--muted); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a {
+    font-size: 0.8rem; color: var(--muted);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+
+  /* SCROLL ANIMATION */
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .contact-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">dev<span>works</span></div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get a Quote →</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Available for new projects · Chennai, India
+    </div>
+    <h1>I Build Software<br>That <em>Runs</em><br>Your Business.</h1>
+    <p class="hero-sub">
+      From <strong>shop billing systems</strong> to <strong>hospital management platforms</strong> — custom software built fast, built right, and built to grow with you.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Start a Project →</a>
+      <a href="#pricing" class="btn-secondary">View Pricing</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">50+</div>
+        <div class="stat-label">Services Offered</div>
+      </div>
+      <div>
+        <div class="stat-num">₹2K</div>
+        <div class="stat-label">Starting Price</div>
+      </div>
+      <div>
+        <div class="stat-num">24hr</div>
+        <div class="stat-label">Response Time</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Custom Built</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header reveal">
+    <div>
+      <div class="section-label">What I Do</div>
+      <h2 class="section-title">Software for Every<br>Kind of Business</h2>
+    </div>
+    <p class="section-desc">Whether you run a shop, clinic, school, or restaurant — I build the system that makes it run smoother.</p>
+  </div>
+  <div class="service-categories reveal">
+    <div class="service-cat">
+      <span class="cat-icon">🏪</span>
+      <div class="cat-title">Business & Retail Systems</div>
+      <div class="cat-desc">Billing, inventory, POS, employee & customer management. Tailored for shops, retail chains, and SMEs.</div>
+      <span class="cat-price">₹15,000 – ₹1,50,000</span>
+    </div>
+    <div class="service-cat">
+      <span class="cat-icon">🏥</span>
+      <div class="cat-title">Industry-Specific Platforms</div>
+      <div class="cat-desc">Hospital, school, hotel, gym, restaurant, pharmacy, and travel agency management systems.</div>
+      <span class="cat-price">₹20,000 – ₹2,50,000</span>
+    </div>
+    <div class="service-cat">
+      <span class="cat-icon">🌐</span>
+      <div class="cat-title">Web Apps & Websites</div>
+      <div class="cat-desc">Full-stack web apps, SaaS platforms, ERP/CRM systems, admin dashboards, and business websites.</div>
+      <span class="cat-price">₹2,000 – ₹6,00,000</span>
+    </div>
+    <div class="service-cat">
+      <span class="cat-icon">⚙️</span>
+      <div class="cat-title">APIs & Backend Services</div>
+      <div class="cat-desc">REST API development, database design, payment gateway integration, and authentication systems.</div>
+      <span class="cat-price">₹3,000 – ₹30,000</span>
+    </div>
+    <div class="service-cat">
+      <span class="cat-icon">🤖</span>
+      <div class="cat-title">Automation & Integrations</div>
+      <div class="cat-desc">Workflow automation, email & SMS systems, chatbot integration, and third-party API connections.</div>
+      <span class="cat-price">₹3,000 – ₹1,20,000</span>
+    </div>
+    <div class="service-cat">
+      <span class="cat-icon">📊</span>
+      <div class="cat-title">Data, Analytics & Maintenance</div>
+      <div class="cat-desc">Dashboards, reporting tools, speed optimization, bug fixing, and monthly maintenance plans.</div>
+      <span class="cat-price">₹500 – ₹60,000</span>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="pricing-section">
+  <div class="pricing-header reveal">
+    <div class="section-label">Transparent Pricing</div>
+    <h2 class="section-title">No Hidden Charges.<br>Ever.</h2>
+    <p class="section-desc" style="margin-top:0.5rem">Fixed-price projects. You know the cost before we start.</p>
+  </div>
+  <div class="pricing-tabs reveal" id="pricingTabs">
+    <button class="pricing-tab active" onclick="filterPricing('popular')">🔥 Most Popular</button>
+    <button class="pricing-tab" onclick="filterPricing('business')">Business Software</button>
+    <button class="pricing-tab" onclick="filterPricing('industry')">Industry Systems</button>
+    <button class="pricing-tab" onclick="filterPricing('web')">Web & Apps</button>
+    <button class="pricing-tab" onclick="filterPricing('backend')">Backend & API</button>
+    <button class="pricing-tab" onclick="filterPricing('monthly')">Monthly Plans</button>
+  </div>
+  <div class="pricing-grid reveal" id="pricingGrid"></div>
+</section>
+
+<!-- PROCESS -->
+<section class="process-section" id="process">
+  <div class="reveal" style="text-align:center;margin-bottom:1rem">
+    <div class="section-label" style="justify-content:center">How It Works</div>
+    <h2 class="section-title">Simple 5-Step Process</h2>
+    <p class="section-desc" style="margin:0.5rem auto 0">From first message to live software — here's exactly what to expect.</p>
+  </div>
+  <div class="process-steps reveal">
+    <div class="process-step">
+      <div class="step-num">01</div>
+      <div class="step-title">Discovery Call</div>
+      <div class="step-desc">We discuss your business needs, goals, and the features you want in your system.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">02</div>
+      <div class="step-title">Proposal & Quote</div>
+      <div class="step-desc">You get a clear breakdown of features, timeline, and fixed price — no surprises.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">03</div>
+      <div class="step-title">Design & Build</div>
+      <div class="step-desc">I build your software with regular updates so you're never in the dark.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">04</div>
+      <div class="step-title">Review & Revise</div>
+      <div class="step-desc">You test the system. We fix, tweak, and improve until you're satisfied.</div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">05</div>
+      <div class="step-title">Launch & Support</div>
+      <div class="step-desc">Go live with full training. Ongoing maintenance plans available monthly.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="reviews">
+  <div class="reveal">
+    <div class="section-label">Client Reviews</div>
+    <h2 class="section-title">Businesses That<br>Trust My Work</h2>
+  </div>
+  <div class="testimonials-grid reveal">
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-quote">The billing software he built for my medical shop saved us hours every day. Fast delivery and explained everything clearly.</div>
+      <div class="testimonial-author">
+        <div class="author-avatar">R</div>
+        <div>
+          <div class="author-name">Rajesh Kumar</div>
+          <div class="author-biz">Pharmacy Owner, Chennai</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-quote">Our restaurant management system tracks orders, tables, and staff all in one place. Very professional work at a reasonable price.</div>
+      <div class="testimonial-author">
+        <div class="author-avatar">P</div>
+        <div>
+          <div class="author-name">Priya Nair</div>
+          <div class="author-biz">Restaurant Owner, Coimbatore</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-quote">The school management system is exactly what we needed. Parents, teachers, and admin all have their own access. Excellent delivery.</div>
+      <div class="testimonial-author">
+        <div class="author-avatar">S</div>
+        <div>
+          <div class="author-name">Suresh Babu</div>
+          <div class="author-biz">School Principal, Madurai</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-quote">From inventory to billing to reports — the retail system handles everything. My staff learned it in a day. Highly recommend!</div>
+      <div class="testimonial-author">
+        <div class="author-avatar">M</div>
+        <div>
+          <div class="author-name">Meena Devi</div>
+          <div class="author-biz">Retail Shop Owner, Trichy</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-quote">Got a full business website with booking system for a very fair price. Delivered on time and looks extremely professional.</div>
+      <div class="testimonial-author">
+        <div class="author-avatar">A</div>
+        <div>
+          <div class="author-name">Anand Sharma</div>
+          <div class="author-biz">Travel Agency, Hyderabad</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <div class="stars">★★★★★</div>
+      <div class="testimonial-quote">The gym management system handles memberships, renewals, and payments automatically. Best investment I made this year.</div>
+      <div class="testimonial-author">
+        <div class="author-avatar">K</div>
+        <div>
+          <div class="author-name">Karthik Rajan</div>
+          <div class="author-biz">Gym Owner, Bangalore</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-wrap">
+    <div class="reveal">
+      <div class="section-label">Get In Touch</div>
+      <h2 class="section-title">Let's Build<br>Something Great</h2>
+      <p class="section-desc" style="margin-top:0.5rem;margin-bottom:2rem">Tell me about your business and what you need. I'll get back to you within 24 hours with a clear quote.</p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-item-label">Email</div>
+            <div class="contact-item-val">hello@devworks.in</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📱</div>
+          <div>
+            <div class="contact-item-label">WhatsApp</div>
+            <div class="contact-item-val">+91 98XXX XXXXX</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-item-label">Location</div>
+            <div class="contact-item-val">Chennai, Tamil Nadu</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Your Name</label>
+          <input type="text" class="form-input" placeholder="Rajesh Kumar">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Business Name</label>
+          <input type="text" class="form-input" placeholder="Kumar Enterprises">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Service Needed</label>
+        <select class="form-select">
+          <option value="">Select a service...</option>
+          <optgroup label="🔥 Most Popular">
+            <option>Shop Billing / POS System (₹15,000–₹50,000)</option>
+            <option>Restaurant Management System (₹30,000–₹1,20,000)</option>
+            <option>Inventory Management System (₹15,000–₹60,000)</option>
+            <option>Booking System (₹20,000–₹1,20,000)</option>
+            <option>Business Website (₹5,000–₹25,000)</option>
+          </optgroup>
+          <optgroup label="Business Software">
+            <option>Business Management System (₹30,000–₹1,50,000)</option>
+            <option>CRM System (₹30,000–₹1,20,000)</option>
+            <option>Employee Management System (₹20,000–₹70,000)</option>
+            <option>Sales Management System (₹25,000–₹80,000)</option>
+          </optgroup>
+          <optgroup label="Industry Systems">
+            <option>Hospital Management System (₹50,000–₹2,50,000)</option>
+            <option>School Management System (₹40,000–₹2,00,000)</option>
+            <option>Hotel Management System (₹50,000–₹2,00,000)</option>
+            <option>Gym Management System (₹20,000–₹80,000)</option>
+            <option>Pharmacy Management System (₹30,000–₹1,20,000)</option>
+          </optgroup>
+          <optgroup label="Web & Apps">
+            <option>Full Stack Web Application (₹40,000–₹2,00,000)</option>
+            <option>ERP System (₹1,00,000–₹6,00,000)</option>
+            <option>SaaS Application (₹80,000–₹5,00,000)</option>
+          </optgroup>
+          <optgroup label="Quick Services">
+            <option>REST API Development (₹5,000–₹30,000)</option>
+            <option>Payment Gateway Integration (₹5,000–₹25,000)</option>
+            <option>Website Speed Optimization (₹3,000–₹15,000)</option>
+            <option>Bug Fixing (₹500–₹5,000)</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tell Me About Your Business</label>
+        <textarea class="form-textarea" placeholder="Describe your business and what you want the software to do..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Phone / WhatsApp</label>
+          <input type="text" class="form-input" placeholder="+91 98XXX XXXXX">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Budget Range</label>
+          <select class="form-select">
+            <option>Under ₹20,000</option>
+            <option>₹20,000 – ₹50,000</option>
+            <option>₹50,000 – ₹1,00,000</option>
+            <option>₹1,00,000 – ₹3,00,000</option>
+            <option>₹3,00,000+</option>
+          </select>
+        </div>
+      </div>
+      <button class="form-submit" onclick="handleSubmit()">Send Message & Get Free Quote →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">devworks</div>
+  <div class="footer-copy">© 2025 DevWorks. All rights reserved. Chennai, India.</div>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => io.observe(r));
+
+  // Pricing data
+  const allPricing = {
+    popular: [
+      { name: 'Shop Billing / POS', price: '₹15,000 – ₹50,000', note: 'One-time project fee', features: ['Product catalog', 'Invoice printing', 'Daily sales report'], featured: true },
+      { name: 'Restaurant Management', price: '₹30,000 – ₹1,20,000', note: 'One-time project fee', features: ['Table & order management', 'Menu & billing', 'Kitchen display'], featured: false },
+      { name: 'Inventory Management', price: '₹15,000 – ₹60,000', note: 'One-time project fee', features: ['Stock tracking', 'Low stock alerts', 'Supplier management'], featured: true },
+      { name: 'Booking System', price: '₹20,000 – ₹1,20,000', note: 'One-time project fee', features: ['Online bookings', 'Calendar view', 'SMS reminders'], featured: false },
+      { name: 'Business Website', price: '₹5,000 – ₹25,000', note: 'One-time project fee', features: ['Mobile responsive', 'Contact form', 'Google Maps'], featured: false },
+      { name: 'Website Maintenance', price: '₹2,000 – ₹15,000/mo', note: 'Monthly retainer', features: ['Updates & backups', 'Bug fixes', 'Content changes'], featured: false },
+    ],
+    business: [
+      { name: 'Business Management System', price: '₹30,000 – ₹1,50,000', note: 'One-time project fee', features: ['Multi-module system', 'User roles', 'Reports & analytics'] },
+      { name: 'Retail Shop Management', price: '₹20,000 – ₹80,000', note: 'One-time project fee', features: ['POS integration', 'Inventory sync', 'Customer loyalty'] },
+      { name: 'Inventory Management', price: '₹15,000 – ₹60,000', note: 'One-time project fee', features: ['Real-time tracking', 'Barcode support', 'Reorder alerts'] },
+      { name: 'Billing / POS System', price: '₹15,000 – ₹50,000', note: 'One-time project fee', features: ['Fast checkout', 'GST billing', 'Receipt printing'], featured: true },
+      { name: 'Employee Management', price: '₹20,000 – ₹70,000', note: 'One-time project fee', features: ['Attendance', 'Payroll', 'Leave management'] },
+      { name: 'CRM System', price: '₹30,000 – ₹1,20,000', note: 'One-time project fee', features: ['Lead tracking', 'Follow-up reminders', 'Sales pipeline'] },
+      { name: 'Sales Management', price: '₹25,000 – ₹80,000', note: 'One-time project fee', features: ['Sales tracking', 'Target monitoring', 'Commission reports'] },
+      { name: 'Order Management', price: '₹25,000 – ₹70,000', note: 'One-time project fee', features: ['Order lifecycle', 'Delivery tracking', 'Customer notifications'] },
+    ],
+    industry: [
+      { name: 'Hospital Management', price: '₹50,000 – ₹2,50,000', note: 'One-time project fee', features: ['Patient records', 'Billing & pharmacy', 'Doctor scheduling'] },
+      { name: 'School Management', price: '₹40,000 – ₹2,00,000', note: 'One-time project fee', features: ['Admissions', 'Fee management', 'Exam & results'], featured: true },
+      { name: 'Restaurant Management', price: '₹30,000 – ₹1,20,000', note: 'One-time project fee', features: ['Table management', 'KOT system', 'Inventory'] },
+      { name: 'Gym Management', price: '₹20,000 – ₹80,000', note: 'One-time project fee', features: ['Member profiles', 'Renewals & billing', 'Attendance'] },
+      { name: 'Hotel Management', price: '₹50,000 – ₹2,00,000', note: 'One-time project fee', features: ['Room booking', 'Check-in/out', 'Billing & reports'] },
+      { name: 'Pharmacy Management', price: '₹30,000 – ₹1,20,000', note: 'One-time project fee', features: ['Stock management', 'Prescription tracking', 'Expiry alerts'] },
+    ],
+    web: [
+      { name: 'Full Stack Web App', price: '₹40,000 – ₹2,00,000', note: 'One-time project fee', features: ['Frontend + backend', 'Database design', 'API + auth'] },
+      { name: 'SaaS Application', price: '₹80,000 – ₹5,00,000', note: 'One-time project fee', features: ['Multi-tenant', 'Subscription billing', 'Admin dashboard'], featured: true },
+      { name: 'ERP System', price: '₹1,00,000 – ₹6,00,000', note: 'One-time project fee', features: ['All business modules', 'Role-based access', 'Reporting engine'] },
+      { name: 'Admin Dashboard', price: '₹15,000 – ₹60,000', note: 'One-time project fee', features: ['Charts & metrics', 'User management', 'Data export'] },
+      { name: 'Business Website', price: '₹5,000 – ₹25,000', note: 'One-time project fee', features: ['Professional design', 'Mobile responsive', 'SEO ready'] },
+      { name: 'Landing Page', price: '₹2,000 – ₹10,000', note: 'One-time project fee', features: ['Conversion-focused', 'Fast loading', 'Contact form'] },
+    ],
+    backend: [
+      { name: 'REST API Development', price: '₹5,000 – ₹30,000', note: 'One-time project fee', features: ['RESTful design', 'Documentation', 'Authentication'] },
+      { name: 'Payment Gateway Integration', price: '₹5,000 – ₹25,000', note: 'One-time project fee', features: ['Razorpay / Stripe', 'UPI support', 'Refund handling'], featured: true },
+      { name: 'Database Design', price: '₹3,000 – ₹12,000', note: 'One-time project fee', features: ['Schema design', 'Optimization', 'Migrations'] },
+      { name: 'Authentication System', price: '₹5,000 – ₹20,000', note: 'One-time project fee', features: ['Login / Register', 'OTP / 2FA', 'Role-based access'] },
+      { name: 'API Integration', price: '₹3,000 – ₹15,000', note: 'One-time project fee', features: ['Third-party APIs', 'Webhook setup', 'Error handling'] },
+      { name: 'Bug Fixing', price: '₹500 – ₹5,000', note: 'Per issue', features: ['Quick turnaround', 'Root cause fix', 'Testing included'] },
+    ],
+    monthly: [
+      { name: 'Website Maintenance', price: '₹2,000 – ₹15,000/mo', note: 'Monthly retainer', features: ['Updates & backups', 'Bug fixes', 'Content changes'], featured: true },
+      { name: 'Technical Support', price: '₹2,000 – ₹10,000/mo', note: 'Monthly retainer', features: ['Priority support', '24hr response', 'Phone / WhatsApp'] },
+      { name: 'Software Maintenance', price: '₹5,000 – ₹25,000/mo', note: 'Monthly retainer', features: ['Feature updates', 'Performance tuning', 'Security patches'] },
+    ]
+  };
+
+  function filterPricing(cat) {
+    document.querySelectorAll('.pricing-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    renderPricing(cat);
+  }
+
+  function renderPricing(cat) {
+    const grid = document.getElementById('pricingGrid');
+    const items = allPricing[cat];
+    grid.innerHTML = items.map(item => `
+      <div class="price-card ${item.featured ? 'featured' : ''}">
+        <div class="price-name">${item.name}</div>
+        <div class="price-range">${item.price}</div>
+        <div class="price-note">${item.note}</div>
+        <hr class="price-divider">
+        ${item.features.map(f => `<div class="price-feature">${f}</div>`).join('')}
+      </div>
+    `).join('');
+  }
+
+  renderPricing('popular');
+
+  function handleSubmit() {
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = '✓ Message Sent! I\'ll reply within 24 hours.';
+    btn.style.background = '#22c55e';
+    btn.disabled = true;
+  }
+</script>
+</body>
+</html>
